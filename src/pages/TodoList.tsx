@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer, useState, KeyboardEvent } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Action } from "../lib/enum/todoAction";
 import { FiPlusCircle } from "react-icons/fi";
@@ -49,6 +49,12 @@ const TodoList = () => {
     });
   };
 
+  const onEnterPress = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      onAddTodo();
+    }
+  };
+
   return (
     <div className="flex-1 flex-col bg-primary min-h-screen p-10">
       <div>
@@ -61,6 +67,7 @@ const TodoList = () => {
           className="p-3 mr-4 rounded-md drop-shadow-md"
           value={todo}
           onChange={e => setTodo(e.target.value)}
+          onKeyDown={onEnterPress}
         />
         <FiPlusCircle
           size={30}
@@ -71,7 +78,7 @@ const TodoList = () => {
       {error && <span className="text-red-500">{error}</span>}
       <div>
         {todos.map(todo => (
-          <TodoCard todo={todo} onRemoveTodo={onRemoveTodo} />
+          <TodoCard todo={todo} onRemoveTodo={onRemoveTodo} key={todo.id} />
         ))}
       </div>
     </div>
